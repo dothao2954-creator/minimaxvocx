@@ -1,0 +1,5 @@
+{
+  "name": "MiniVox - AI Speech Synthesis",
+  "description": "A high-fidelity text-to-speech application inspired by Minimax, powered by Google Gemini 2.5 Flash TTS.",
+  "requestFramePermissions": []
+}

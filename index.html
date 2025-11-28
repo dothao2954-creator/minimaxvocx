@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MiniVox - AI Speech</title>
+    <!-- Tailwind via CDN is useful for the initial loading state styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #09090b; /* zinc-950 */
+        color: #e4e4e7; /* zinc-200 */
+        margin: 0;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #18181b; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3f3f46; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #52525b; 
+      }
+      
+      /* Loading Spinner for Initial Load */
+      .initial-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #71717a;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255,255,255,0.1);
+        border-radius: 50%;
+        border-top-color: #6366f1;
+        animation: spin 1s ease-in-out infinite;
+        margin-bottom: 1rem;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "vite": "https://aistudiocdn.com/vite@^7.2.4",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <!-- Root Element with Fallback Content -->
+    <div id="root">
+      <div class="initial-loader">
+        <div class="spinner"></div>
+        <p>Loading MiniVox...</p>
+        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.5; max-width: 300px; text-align: center;">
+          If this screen stays black for more than 5 seconds, please check the browser console (F12) for errors.
+        </p>
+      </div>
+    </div>
+    
+    <!-- GTranslate -->
+    <div class="gtranslate_wrapper"></div>
+    <script>window.gtranslateSettings = {"default_language":"en","detect_browser_language":true,"wrapper_selector":".gtranslate_wrapper"}</script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
+    <!-- Global Error Handler for "Black Screen" Debugging -->
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        // If React crashes completely, show the error on screen
+        const root = document.getElementById('root');
+        if (root && root.innerText.includes('Loading MiniVox')) {
+             root.innerHTML = `
+                <div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#ef4444; padding:20px; text-align:center;">
+                    <h2 style="font-size:1.5rem; margin-bottom:10px;">Application Error</h2>
+                    <p style="color:#e4e4e7; margin-bottom:20px;">The application failed to start.</p>
+                    <pre style="background:#18181b; padding:15px; border-radius:8px; overflow:auto; max-width:100%; text-align:left; font-size:0.85rem; border:1px solid #3f3f46;">${message}\n\nSource: ${source}:${lineno}</pre>
+                </div>
+             `;
+        }
+      };
+    </script>
+
+    <!-- Vite Entry Point -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
